@@ -1,5 +1,7 @@
 package org.mitre.springboot.config;
 
+import java.util.Arrays;
+
 import javax.servlet.Filter;
 
 import org.mitre.jwt.assertion.AssertionValidator;
@@ -35,7 +37,6 @@ import org.mitre.oauth2.service.impl.UriEncodedClientUserDetailsService;
 import org.mitre.oauth2.token.ChainedTokenGranter;
 import org.mitre.oauth2.token.JWTAssertionTokenGranter;
 import org.mitre.oauth2.token.ScopeServiceAwareOAuth2RequestValidator;
-import org.mitre.oauth2.web.CorsFilter;
 import org.mitre.oauth2.web.OAuthConfirmationController;
 import org.mitre.openid.connect.config.ConfigurationPropertiesBean;
 import org.mitre.openid.connect.filter.AuthorizationRequestFilter;
@@ -107,6 +108,9 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
 import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurityExpressionHandler;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 
 @Configuration
@@ -118,7 +122,7 @@ import org.springframework.web.servlet.view.BeanNameViewResolver;
 @EnableConfigurationProperties()
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 @Order(101)
-public class OpenIDConnectServerConfig{
+public class OpenIDConnectServerConfig {
 
     //TODO Configuration for ClientKeyPublisherMapping
 
@@ -336,10 +340,15 @@ public class OpenIDConnectServerConfig{
     public static class OAuthConfirmationControllerConfiguration{
     }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "corsFilter")
-    public Filter corsFilter(){
-        return new CorsFilter();
+    @Bean(name="corsFilter")
+    public Filter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedHeader("Access-Control-Allow-Origin");
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin,Content-Type", "Accept", "Authorization"));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
     /*
