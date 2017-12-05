@@ -344,9 +344,8 @@ public class OpenIDConnectServerConfig {
     public Filter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedHeader("Access-Control-Allow-Origin");
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin,Content-Type", "Accept", "Authorization"));
+        config.setAllowedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "X-Requested-With,Origin,Content-Type, Accept, Authorization"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
