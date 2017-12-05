@@ -11,7 +11,7 @@ The [default](samples/default) sample application attempts to be as close as pos
 
 Pull requests and feature improvements are welcome.
 
-Currently supports Spring Boot 1.5.2, MitreId Connect 1.3.0, and Spring Security 4.3.7
+Currently supports Spring Boot 1.5.9, MitreId Connect 1.3.0, and Spring Security 4.3.7
 
 ## Password Encoders
 
